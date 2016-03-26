@@ -1,9 +1,9 @@
 <?php
-namespace src\singleton;
+namespace WarywayWebsiteTemplate\singleton;
 
 class Database 
 {
-	use \src\traits\Singleton;
+	use \WarywayWebsiteTemplate\traits\Singleton;
     /**
      * @var PDO
      */

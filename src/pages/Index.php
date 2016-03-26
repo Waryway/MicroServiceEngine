@@ -6,7 +6,7 @@ require_once '..'. DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . 'vendor'. D
 
 class Index
 {
-	use src\traits\Page;
+	use WarywayWebsiteTemplate\traits\Page;
 	
 	protected function Configure()
 	{

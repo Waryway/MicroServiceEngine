@@ -1,5 +1,5 @@
 <?php
-namespace src\traits;
+namespace WarywayWebsiteTemplate\traits;
 
 trait Page
 {

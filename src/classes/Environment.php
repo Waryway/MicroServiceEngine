@@ -1,5 +1,5 @@
 <?php
-namespace src\classes;
+namespace WarywayWebsiteTemplate\classes;
 class Environment
 {
 	const IS_LOADED = true;

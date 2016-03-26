@@ -1,9 +1,9 @@
 <?php
-namespace src\singleton;
+namespace WarywayWebsiteTemplate\singleton;
 
 class Session
 {
-    use \src\traits\Singleton;
+    use \WarywayWebsiteTemplate\traits\Singleton;
 
 	/**
 	 * @var string
