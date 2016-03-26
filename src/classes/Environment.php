@@ -1,8 +1,11 @@
 <?php
 namespace WarywayWebsiteTemplate\classes;
+
+if(!defined('WEBSITE_NAME')){define('WEBSITE_NAME', 'configure your website');}
+
 class Environment
 {
-	const WEBSITE_NAME			= 'configure you website';
+	const WEBSITE_NAME			= WEBSITE_NAME;
 	const IS_LOADED 			= true;
 	const HTTP_COOKIE_DOMAIN 	= 'pleasedefineyourdomain.com';
 	const HTTPS_COOKIE_DOMAIN	= 'pleasedefineyourdomain.com';
