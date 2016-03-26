@@ -1,0 +1,37 @@
+body {
+	font-family: Verdana, Comic, sans serif;
+  	background-color: #000000;
+	background-image: url("/images/bg-bluetechno.jpg"), url("/images/bg-bluetechno-flip.jpg");
+	background-repeat: repeat-y, repeat-y;
+	background-position: top left, top right;
+	
+ 	color: #bbbbaa;
+  	margin: 0px;
+}
+
+h1 {
+  font-size: 16pt;
+  color: #00598E;
+}
+
+
+.navbar {
+	width:100%;
+	height:33px;
+	border: 0px solid #aaa;
+	border-bottom:1px;
+	background-color:white;
+	padding-top:7px;
+}
+
+.navbar a {
+	text-decoration: none;
+	font-weight: bold;
+	margin:5px;
+	color: #999;
+}
+
+.navbar a:hover {
+	color: #555;
+}	
+

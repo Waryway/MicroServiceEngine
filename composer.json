@@ -1,0 +1,22 @@
+{
+    "name": "waryway/website-template",
+    "description": "General Purpose Cookie Cutter Website templating",
+    "type": "library",
+    "require": {
+        "twbs/bootstrap": "^3.3",
+        "components/jquery": "^2.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kyle Wiering",
+            "email": "kawiering@yahoo.com"
+        }
+    ],
+	"autoload": {
+		"psr-4": {
+			"WarywayWebsiteTemplate\\": "src/"
+		}
+	},
+    "minimum-stability": "dev"
+}

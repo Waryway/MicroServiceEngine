@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <configuration xmlns="http://logging.apache.org/log4php/">       
+		<appender name="Page" class="LoggerAppenderFile">
+			<layout class="LoggerLayoutHtml">
+				<param name="locationInfo" value="true" />
+			</layout>
+			<param name="file" value="C:\Development\OnlineStore\.log\log.html" />
+			<param name="append" value="true" />
+		</appender>
+		<appender name="default" class="LoggerAppenderFile">
+			<layout class="LoggerLayoutSimple" />
+			<param name="file" value="C:\apache\logs\php.errors.log" />
+			<param name="append" value="true" />
+		</appender>
+        <root>
+            <level value="info" />
+            <appender_ref ref="default" />
+			<appender_ref ref="Page" />
+			
+        </root>
+    </configuration>
