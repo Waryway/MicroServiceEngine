@@ -108,7 +108,7 @@ HTML;
 		$websiteName = \WarywayWebsiteTemplate\classes\Environment::WEBSITE_NAME;
 		
 		return <<<BANNER
-<div class="navbar"><div><a href="index.php">{$websiteName}</a></div></div>
+<div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div></div>
 BANNER;
 	}
 	
