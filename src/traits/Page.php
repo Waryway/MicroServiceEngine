@@ -105,8 +105,10 @@ HTML;
 	
 	final private function RenderBanner()
 	{
+		$websiteName = \WarywayWebsiteTemplate\classes\Environment::WEBSITE_NAME;
+		
 		return <<<BANNER
-<div class="navbar"><div><a href="index.php">Waryway</a></div></div>
+<div class="navbar"><div><a href="index.php">{{$websiteName}}</a></div></div>
 BANNER;
 	}
 	

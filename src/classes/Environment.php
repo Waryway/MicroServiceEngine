@@ -2,9 +2,10 @@
 namespace WarywayWebsiteTemplate\classes;
 class Environment
 {
-	const IS_LOADED = true;
-	const HTTP_COOKIE_DOMAIN 	= 'waryway.com';
-	const HTTPS_COOKIE_DOMAIN	= 'waryway.com';
+	const WEBSITE_NAME			= 'configure you website';
+	const IS_LOADED 			= true;
+	const HTTP_COOKIE_DOMAIN 	= 'pleasedefineyourdomain.com';
+	const HTTPS_COOKIE_DOMAIN	= 'pleasedefineyourdomain.com';
 	const HTTP_COOKIE_PATH		= '/';
 	const HTTPS_COOKIE_PATH		= '/';
 	const URL_PAGE_TO_CONFIG	= '../config/';
