@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "twbs/bootstrap": "^3.3",
-        "components/jquery": "^2.2"
+        "components/jquery": "^2.2",
+        "apache/log4php": "^2.3"
     },
     "license": "MIT",
     "authors": [
