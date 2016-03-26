@@ -41,7 +41,7 @@ trait Page
 		
 		
 		/** @var $this->Session Session */
-		$this->Session = \src\singleton\Session::inst();
+		$this->Session = \WarywayWebsiteTemplate\singleton\Session::inst();
 		$this->Session->Start();
 		$this->RenderPage();
 	}
@@ -85,7 +85,7 @@ HTML;
 	
 	final private function RenderCss()
 	{
-		return '<link type="text/css" rel="stylesheet" href="'.\src\classes\Environment::URL_PAGE_TO_CONFIG.'style.css"/>';
+		return '<link type="text/css" rel="stylesheet" href="'.\WarywayWebsiteTemplate\classes\Environment::URL_PAGE_TO_CONFIG.'style.css"/>';
 	}
 	
 	protected function RenderJavascript()

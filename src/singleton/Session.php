@@ -36,8 +36,8 @@ class Session
 		$request_type =(getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 		
 		// set the cookie domain
-		$cookie_domain =(($request_type == 'NONSSL') ? \src\classes\Environment::HTTP_COOKIE_DOMAIN : \src\classes\Environment::HTTPS_COOKIE_DOMAIN);
-		$cookie_path =(($request_type == 'NONSSL') ? \src\classes\Environment::HTTP_COOKIE_PATH : \src\classes\Environment::HTTPS_COOKIE_PATH);
+		$cookie_domain =(($request_type == 'NONSSL') ? \WarywayWebsiteTemplate\classes\Environment::HTTP_COOKIE_DOMAIN : \WarywayWebsiteTemplate\classes\Environment::HTTPS_COOKIE_DOMAIN);
+		$cookie_path =(($request_type == 'NONSSL') ? \WarywayWebsiteTemplate\classes\Environment::HTTP_COOKIE_PATH : \WarywayWebsiteTemplate\classes\Environment::HTTPS_COOKIE_PATH);
 		$currentSession = null;
 		
 		// set the session cookie parameters
