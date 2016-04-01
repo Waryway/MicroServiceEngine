@@ -105,10 +105,21 @@ HTML;
 	
 	final private function RenderBanner()
 	{
+		$tabString = '';
 		$websiteName = \WarywayWebsiteTemplate\classes\Environment::WEBSITE_NAME;
-		
+
+
+		/* @var $tabsDir \Directory */
+		$tabsDir = dir(\WarywayWebsiteTemplate\classes\Environment::WEBSITE_ROOT . "\\tabs");
+
+		if(file_exists($tabsDir)) {
+			while (($tabFileName = $tabsDir->read()) !== false) {
+				$tabString .= '<span class="tabLink"><a href="' . \WarywayWebsiteTemplate\classes\Environment::WEBSITE_ROOT . '\\tabs\\' . $tabFileName . '">substr($tabFileName, 0, -4)</a></span>';
+
+			}
+		}
 		return <<<BANNER
-<div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div></div>
+<div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div>{$tabString}</div>
 BANNER;
 	}
 	
