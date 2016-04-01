@@ -119,7 +119,7 @@ HTML;
 			}
 		}
 		return <<<BANNER
-<div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div>{$tabString}</div>
+<div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div><div class="navbar-tab-links">{$tabString}</div></div>
 BANNER;
 	}
 
