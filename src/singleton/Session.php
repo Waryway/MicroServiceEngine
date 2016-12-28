@@ -28,7 +28,7 @@ class Session
 	
 	public function Start()
 	{
-		if ($this->getIsSessionStarted(true))
+		if ($this->getIsSessionStarted())
 		{
 			return;
 		}

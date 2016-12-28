@@ -35,15 +35,15 @@ trait Page
 
 	final public function __construct()
 	{
-		\Logger::configure("..\\config\\logger.xml");
-		$this->log = \Logger::getLogger(__CLASS__);
+		//\Logger::configure("..\\config\\logger.xml");
+		//$this->log = \Logger::getLogger(__CLASS__);
 
 
 
 		/** @var $this->Session Session */
-		$this->Session = \WarywayWebsiteTemplate\singleton\Session::inst();
-		$this->Session->Start();
-		$this->RenderPage();
+		//$this->Session = \WarywayWebsiteTemplate\singleton\Session::inst();
+		//$this->Session->Start();
+		$this->renderedPage = $this->RenderPage();
 	}
 
 	final private function RenderPage()
@@ -52,7 +52,7 @@ trait Page
 		$headContent = $this->RenderHead();
 		$bodyContent = $this->RenderBody();
 
-		echo <<<HTML
+		return <<<HTML
 <!DOCTYPE html><html><head>{$headContent}</head><body>{$bodyContent}</body></html>
 HTML;
 	}
@@ -113,11 +113,13 @@ HTML;
 		/* @var $tabsDir \Directory */
 
 		if(file_exists($root.'src\\tabs')) {
-			$tabsDir = dir($root.'src\\tabs');			while (($tabFileName = $tabsDir->read()) !== false) {
+			$tabsDir = dir($root.'src\\tabs');
+			while (($tabFileName = $tabsDir->read()) !== false) {
 				$tabString .= '<span class="tabLink"><a href="'.$root.'src\\tabs\\' . $tabFileName . '">'.substr($tabFileName, 0, -4).'</a></span>';
 
 			}
 		}
+
 		return <<<BANNER
 <div class="navbar"><div id="navbar-home-link"><a href="index.php">{$websiteName}</a></div><div class="navbar-tab-links">{$tabString}</div></div>
 BANNER;

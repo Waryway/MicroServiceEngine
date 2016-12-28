@@ -1,12 +1,9 @@
 <?php
-
-require_once '..'. DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . 'vendor'. DIRECTORY_SEPARATOR . 'autoload.php';
-
-
+namespace WarywayWebsiteTemplate\pages;
 
 class Index
 {
-	use WarywayWebsiteTemplate\traits\Page;
+	use \WarywayWebsiteTemplate\traits\Page;
 	
 	protected function Configure()
 	{
@@ -19,5 +16,4 @@ class Index
 		return 'Welcome to waryway.com!';
 	}
 }
-new Index();
 ?>

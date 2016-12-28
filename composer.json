@@ -5,7 +5,9 @@
     "require": {
         "twbs/bootstrap": "^3.3",
         "components/jquery": "^2.2",
-        "apache/log4php": "^2.3"
+        "apache/log4php": "^2.3",
+        "react/http": "*",
+        "nikic/fast-route": "^1.0"
     },
     "license": "MIT",
     "authors": [
