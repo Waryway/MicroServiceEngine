@@ -20,7 +20,7 @@ class PageRouter implements \WarywayWebsiteTemplate\interfaces\iRoute
     public static function PageLoader($vars, $responseObject)
     {
         chdir(Environment::WEBSITE_ROOT);
-        print_r($vars);
+
         $FileName = strtoupper(substr($vars['name'],0,1)) . substr($vars['name'],1);
         if(file_exists('pages' . DIRECTORY_SEPARATOR . $FileName)) {
 
