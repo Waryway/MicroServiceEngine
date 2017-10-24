@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+$autoLoadPath = [
+    [__DIR__ . '/../../autoload.php', __DIR__ . '/src/ReactServer.php' ],
+    [__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../src/ReactServer.php'],
+    [__DIR__ . '/vendor/autoload.php', __DIR__ . '/src/ReactServer.php']
+];
+
+foreach ($autoLoadPath as $paths) {
+    if (file_exists($paths[0])) {
+        define('PHPUNIT_COMPOSER_INSTALL', $paths[0]);
+        define('REACT_SERVER_INSTALL', $paths[1]);
+        break;
+
+    }
+}
+unset($autoLoadPath);
+unset($paths);
+
+if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+
+    die(1);
+}
+
+require PHPUNIT_COMPOSER_INSTALL;
+require REACT_SERVER_INSTALL;

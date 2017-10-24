@@ -1,25 +1,23 @@
 {
-    "name": "waryway/website-template",
-    "description": "General Purpose Cookie Cutter Website templating",
-    "type": "library",
-    "require": {
-        "twbs/bootstrap": "^3.3",
-        "components/jquery": "^2.2",
-        "apache/log4php": "^2.3",
-        "react/http": "*",
-        "nikic/fast-route": "^1.0"
-    },
+    "name": "waryway/api",
+    "description": "Websocket api for use in micro-service applications",
+    "type": "application",
     "license": "MIT",
+	"require": {
+        "react/http": "0.7.4",
+        "nikic/fast-route": "1.2.0"
+    },
     "authors": [
         {
             "name": "Kyle Wiering",
-            "email": "kawiering@yahoo.com"
+            "email": "kyle@waryway.com"
         }
     ],
 	"autoload": {
 		"psr-4": {
-			"WarywayWebsiteTemplate\\": "src/"
+			"Waryway\\Api\\": "src/"
 		}
 	},
+    "bin":["server"],
     "minimum-stability": "dev"
 }
