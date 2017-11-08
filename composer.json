@@ -1,11 +1,11 @@
 {
-    "name": "waryway/api",
-    "description": "Websocket api for use in micro-service applications",
+    "name": "waryway/service",
+    "description": "React server for use in micro-service applications",
     "type": "application",
     "license": "MIT",
 	"require": {
         "react/http": "0.7.4",
-        "nikic/fast-route": "1.2.0"
+        "nikic/fastroute": "1.2.0"
     },
     "authors": [
         {
@@ -15,7 +15,7 @@
     ],
 	"autoload": {
 		"psr-4": {
-			"Waryway\\Api\\": "src/"
+			"Waryway\\Service\\": "src/"
 		}
 	},
     "bin":["server"],

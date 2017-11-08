@@ -1,11 +1,11 @@
 <?php
-namespace Waryway\Api;
+namespace Waryway\Service;
 
 use Psr\Http\Message\ServerRequestInterface;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
 
-class Router {
+class BaseRouter {
     public function __construct()
     {
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
@@ -17,6 +17,8 @@ class Router {
         });
     }
 
+    // This is initialized and used by default. The next goal is to override this class if possible.
+    // Or at least determine a way to send the request to the router of the program that required this 'service'.
     public function RouteRequest(ServerRequestInterface $request) {
         // Fetch method and URI from somewhere
         $httpMethod = $request->getMethod();

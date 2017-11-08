@@ -4,11 +4,11 @@ use React\EventLoop\Factory;
 use React\Http\Response;
 use React\Http\Server as HttpServer;
 use React\Socket\Server as SocketServer;
-use Waryway\Api\Router;
+use Waryway\Service\BaseRouter;
 
 require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
-$router = new Router();
+$router = new BaseRouter();
 $server = new HttpServer(function (ServerRequestInterface $request) use (&$router) {
 
 
