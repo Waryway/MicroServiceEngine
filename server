@@ -1,5 +1,10 @@
 #!/usr/bin/env php
 <?php
+if($argc < 2) {
+    die('Unable to commence, Service namespace is missing. ' . PHP_EOL . 'Please define the namespace (<company>\<project>');
+}
+$nameSpace = $argv[1];
+
 
 $autoLoadPath = [
     [__DIR__ . '/../../autoload.php', __DIR__ . '/src/ReactServer.php' ],
@@ -32,6 +37,12 @@ if (!defined('COMPOSER_AUTOLOADER')) {
 require COMPOSER_AUTOLOADER;
 require REACT_SERVER_INSTALL;
 
+$routerClass = $namespace . '\' . 'Router';
+if (!class_exists($routerClass,true)) {
+    die('Unable to find the router ('.$router.')');
+} else {
+    $router = new $router();
+}
 
 /**
 Including this in the file, as the idea came from phpunit...

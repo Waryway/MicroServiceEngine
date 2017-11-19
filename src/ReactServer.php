@@ -8,7 +8,6 @@ use Waryway\MicroServiceEngine\BaseRouter;
 
 require __DIR__ . '/../vendor/autoload.php';
 $loop = Factory::create();
-$router = new BaseRouter();
 $server = new HttpServer(function (ServerRequestInterface $request) use (&$router) {
 
 
