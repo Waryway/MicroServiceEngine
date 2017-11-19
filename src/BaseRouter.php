@@ -1,5 +1,5 @@
 <?php
-namespace Waryway\Service;
+namespace Waryway\MicroServiceEngine;
 
 use Psr\Http\Message\ServerRequestInterface;
 use FastRoute\RouteCollector;

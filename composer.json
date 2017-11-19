@@ -1,6 +1,6 @@
 {
-    "name": "waryway/service",
-    "description": "React server for use in micro-service applications",
+    "name": "waryway/micro-service-engine",
+    "description": "ReactPHP server for use in micro-service applications",
     "type": "application",
     "license": "MIT",
 	"require": {
@@ -16,7 +16,7 @@
     ],
 	"autoload": {
 		"psr-4": {
-			"Waryway\\Service\\": "src/"
+			"Waryway\\MicroServiceEngine\\": "src/"
 		}
 	},
     "bin":["server"],
