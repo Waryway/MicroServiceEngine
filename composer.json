@@ -5,7 +5,8 @@
     "license": "MIT",
 	"require": {
         "react/http": "0.7.4",
-        "nikic/fastroute": "1.2.0"
+        "nikic/fastroute": "1.2.0",
+        "waryway/php-traits-library": "1.0.2"
     },
     "authors": [
         {
