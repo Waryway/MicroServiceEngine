@@ -9,7 +9,7 @@ class BaseRouter {
     public function __construct()
     {
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
-            $r->addRoute('GET', '/users', 'get_all_users_handler');
+         //   $r->addRoute('GET', '/users', 'get_all_users_handler');
             // {id} must be a number (\d+)
          //   $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
             // The /{title} suffix is optional
@@ -24,7 +24,7 @@ class BaseRouter {
         $httpMethod = $request->getMethod();
         $uri = $request->getUri();
 
-        print_r($uri->getPath());
+        // print_r($uri->getPath());
         // Strip query string (?foo=bar) and decode URI
         if (false !== $pos = strpos($uri, '?')) {
             $uri = substr($uri, 0, $pos);
@@ -35,6 +35,7 @@ class BaseRouter {
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
+                    return json_encode($this->NotFoundMessage($path));
                 // ... 404 Not Found
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
@@ -52,6 +53,10 @@ class BaseRouter {
         } else {
             return json_encode($path);
         }
+    }
+
+    public function NotFoundMessage($path) {
+        return 'The requested resource was unavailable. ' . $path;
     }
 
     public function get_all_users_handler($vars)

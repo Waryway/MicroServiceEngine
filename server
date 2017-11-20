@@ -1,14 +1,26 @@
 #!/usr/bin/env php
 <?php
-if($argc < 2) {
+if ($argc < 2) {
     die('Unable to commence, Service namespace is missing. ' . PHP_EOL . 'Please define the namespace (<company>\<project>');
 }
 $nameSpace = $argv[1];
+if (in_array($nameSpace, ['--help','-h', '-?', '--h','--?', '-help'])) {
+    die(<<<HELP
+Required: The first argument is the namespace <company>\<project>
+Optional: The second argument is the host:port combo. Default is 0.0.0.0:0.
+            If the default is provided, a random port will be selected.
+            If 127.0.0.1 is specified, the service will only respond to
+            local requests.
+            If only a port is specified, 127.0.0.1 will be used.
+HELP
+);
+}
 
+$argv[0] = array_shift($argv);
 
 $autoLoadPath = [
     [__DIR__ . '/../../autoload.php', __DIR__ . '/src/ReactServer.php' ],
-    [__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../src/ReactServer.php'],
+    [__DIR__ . '/../vendor/autoload.php', __DIR__ . '/src/ReactServer.php'],
     [__DIR__ . '/vendor/autoload.php', __DIR__ . '/src/ReactServer.php']
 ];
 
@@ -35,14 +47,18 @@ if (!defined('COMPOSER_AUTOLOADER')) {
 }
 
 require COMPOSER_AUTOLOADER;
+
+$routerClass = '\\'.$nameSpace . '\\' . 'Router';
+
+if (!class_exists($routerClass,true)) {
+    die('Unable to find the router ('.$routerClass.')');
+} else {
+    $router = new $routerClass();
+}
+
 require REACT_SERVER_INSTALL;
 
-$routerClass = $namespace . '\' . 'Router';
-if (!class_exists($routerClass,true)) {
-    die('Unable to find the router ('.$router.')');
-} else {
-    $router = new $router();
-}
+
 
 /**
 Including this in the file, as the idea came from phpunit...

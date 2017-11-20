@@ -6,11 +6,12 @@ use React\Http\Server as HttpServer;
 use React\Socket\Server as SocketServer;
 use Waryway\MicroServiceEngine\BaseRouter;
 
-require __DIR__ . '/../vendor/autoload.php';
+if(!isset($router)) {
+    $router = new BaseRouter();
+}
+
 $loop = Factory::create();
 $server = new HttpServer(function (ServerRequestInterface $request) use (&$router) {
-
-
     return new Response(
         200,
         ['Content-Type' => 'application/json'],
