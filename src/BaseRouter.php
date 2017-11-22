@@ -22,6 +22,7 @@ class BaseRouter {
     public function RouteRequest(ServerRequestInterface $request) {
         // Fetch method and URI from somewhere
         $httpMethod = $request->getMethod();
+        $headers = $request->getHeaders();
         $uri = $request->getUri();
 
         // print_r($uri->getPath());
@@ -43,15 +44,16 @@ class BaseRouter {
                 // ... 405 Method Not Allowed
                 break;
             case Dispatcher::FOUND:
+                $routeInfo[2]['headers'] = $headers;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 // ... call $handler with $vars
                 break;
         }
         if($handler){
-            return json_encode($this->$handler($vars));
+            return $this->$handler($vars);
         } else {
-            return json_encode($path);
+            return $path;
         }
     }
 

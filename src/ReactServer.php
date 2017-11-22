@@ -12,11 +12,11 @@ if(!isset($router)) {
 
 $loop = Factory::create();
 $server = new HttpServer(function (ServerRequestInterface $request) use (&$router) {
-    return new Response(
-        200,
-        ['Content-Type' => 'application/json'],
-        $router->RouteRequest($request)
-    );
+    $response = $router->RouteRequest($request);
+    $headers = array_merge(['Content-Type' => 'application/json'], (is_array($response) && isset($response['headers'])) ? $response['headers'] : []);
+    $code = (is_array($response) && isset($response['code'])) ? $response['code'] : 200;
+    $response = json_encode((is_array($response) && isset($response['body'])) ? $response['body'] : $response);
+    return new Response($code, $headers, $response);
 });
 
 $socket = new SocketServer(isset($argv[1]) ? $argv[1] : '0.0.0.0:0', $loop);
