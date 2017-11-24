@@ -36,21 +36,21 @@ class BaseRouter {
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                    return json_encode($this->NotFoundMessage($path));
-                // ... 404 Not Found
+                    return $this->NotFoundMessage($path);
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
                 // ... 405 Method Not Allowed
                 break;
             case Dispatcher::FOUND:
+
                 $routeInfo[2]['headers'] = $headers;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 // ... call $handler with $vars
                 break;
         }
-        if($handler){
+        if ($handler){
             return $this->$handler($vars);
         } else {
             return $path;
@@ -60,10 +60,4 @@ class BaseRouter {
     public function NotFoundMessage($path) {
         return 'The requested resource was unavailable. ' . $path;
     }
-
-    public function get_all_users_handler($vars)
-    {
-        return print_r($vars, true);
-    }
-
 }
