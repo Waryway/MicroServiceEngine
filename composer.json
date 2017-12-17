@@ -9,7 +9,7 @@
 		"waryway/php-traits-library": "1.0.2"
     },
 	"suggest": {
-		"lcobucci/jwt": "Can be used for JWT authentication mechanisms",
+		"lcobucci/jwt": "Can be used for JWT authentication mechanisms"
 	}
     "authors": [
         {
