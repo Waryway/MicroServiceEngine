@@ -6,8 +6,11 @@
 	"require": {
         "react/http": "dev-master",
         "nikic/fast-route": "1.2.0",
-        "waryway/php-traits-library": "1.0.2"
+		"waryway/php-traits-library": "1.0.2"
     },
+	"suggest": {
+		"lcobucci/jwt": "Can be used for JWT authentication mechanisms",
+	}
     "authors": [
         {
             "name": "Kyle Wiering",
