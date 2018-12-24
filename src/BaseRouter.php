@@ -28,6 +28,7 @@ CREDITS;
         // Fetch method and URI from somewhere
         $httpMethod = $request->getMethod();
         $headers = $request->getHeaders();
+        $body = $request->getBody();
         $uri = $request->getUri();
 
         // print_r($uri->getPath());
@@ -50,6 +51,7 @@ CREDITS;
             case Dispatcher::FOUND:
 
                 $routeInfo[2]['headers'] = $headers;
+                $routeInfo[2]['body'] = $body;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 // ... call $handler with $vars
