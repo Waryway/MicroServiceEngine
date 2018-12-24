@@ -4,16 +4,21 @@ namespace Waryway\MicroServiceEngine;
 use Psr\Http\Message\ServerRequestInterface;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
+use React\Http\Response;
 
 class BaseRouter {
+    const CREDITS = <<<CREDITS
+<html><head><title>Waryway/MicroServiceEngine Credits</title></head><body><h1>Credits</h1><p>This website is powered by the <a href="http://waryway.com">WaryWay</a> MicroServiceEngine.</p></body></html>
+CREDITS;
+
+
     public function __construct()
     {
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
-         //   $r->addRoute('GET', '/users', 'get_all_users_handler');
-            // {id} must be a number (\d+)
-         //   $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
-            // The /{title} suffix is optional
-         //   $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
+            // Default route for 'credits'.
+            $r->addRoute('GET', '/credit', function ($params) {
+                return new Response(200, ['Content-Type' => 'text/html'], self::CREDITS);
+            });
         });
     }
 

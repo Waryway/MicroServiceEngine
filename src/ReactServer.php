@@ -13,6 +13,13 @@ if(!isset($router)) {
 $loop = Factory::create();
 $server = new HttpServer(function (ServerRequestInterface $request) use (&$router) {
     $response = $router->RouteRequest($request);
+
+    // If a Response object is returned, just keep returning it.  Otherwise, json encode the response.
+    if (is_a($response, Response::class))
+    {
+        return $response;
+    }
+
     $headers = array_merge(['Content-Type' => 'application/json'], (is_array($response) && isset($response['headers'])) ? $response['headers'] : []);
     $code = (is_array($response) && isset($response['code'])) ? $response['code'] : 200;
     $response = json_encode((is_array($response) && isset($response['body'])) ? $response['body'] : $response);
