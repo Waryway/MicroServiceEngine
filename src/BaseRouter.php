@@ -14,26 +14,26 @@ CREDITS;
     /**
      * @var array[Dispatcher]
      */
-    private $dispatcherList = [];
+    private $dispatcher;
 
+    private $routeList = [];
+
+    private function credit($params){
+        return new Response(200, ['Content-Type' => 'text/html'], self::CREDITS);
+    }
 
     public function __construct()
     {
-        $this->addDispacter(\FastRoute\simpleDispatcher(function (RouteCollector $r) {
-            // Default route for 'credits'.
-            $r->addRoute('GET', '/credit', function ($params) {
-                return new Response(200, ['Content-Type' => 'text/html'], self::CREDITS);
-            });
-        }));
+        $this->setRoute('GET', '/credit', 'credit');
+        $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
+            foreach ($this->routeList as $route) {
+                $r->addRoute($route['method'], $route['route'], $route['handler']);
+            }
+        });
     }
 
-    /**
-     *
-     *
-     * @param Dispatcher $newDispatcher
-     */
-    protected function addDispacter(Dispatcher $newDispatcher ) {
-        $this->dispatcherList[] = $newDispatcher;
+    protected function setRoute($method, $route, $handler) {
+        $this->routeList[] = ['method'=>$method,'route'=>$route,'handler'=>$handler];
     }
 
     /**
@@ -43,7 +43,8 @@ CREDITS;
      * @param ServerRequestInterface $request
      * @return string
      */
-    public function RouteRequest(ServerRequestInterface $request) {
+    public function RouteRequest(ServerRequestInterface $request)
+    {
         // Fetch method and URI from somewhere
         $httpMethod = $request->getMethod();
         $headers = $request->getHeaders();
@@ -57,32 +58,31 @@ CREDITS;
         }
         $path = rawurldecode($uri->getPath());
 
-        foreach($this->dispatcherList as $dispatcher) {
-            $routeInfo = $dispatcher->dispatch($httpMethod, $path);
-            switch ($routeInfo[0]) {
-                case Dispatcher::NOT_FOUND:
-                    continue; // Because it might be found in a different dispatcher.
-                    break;
-                case Dispatcher::METHOD_NOT_ALLOWED:
-                    $allowedMethods = $routeInfo[1];
-                    // ... 405 Method Not Allowed
-                    break;
-                case Dispatcher::FOUND:
-
-                    $routeInfo[2]['headers'] = $headers;
-                    $routeInfo[2]['body'] = $body;
-                    $handler = $routeInfo[1];
-                    $vars = $routeInfo[2];
-                    if ($handler){
-                        return $this->$handler($vars);
-                    } else {
-                        return $path;
-                    }
-                    break;
-            }
+        $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
+        $handler = false;
+        switch ($routeInfo[0]) {
+            case Dispatcher::METHOD_NOT_ALLOWED:
+                $allowedMethods = $routeInfo[1];
+                // ... 405 Method Not Allowed
+                break;
+            case Dispatcher::FOUND:
+                $routeInfo[2]['headers'] = $headers;
+                $routeInfo[2]['body'] = $body;
+                $handler = $routeInfo[1];
+                $vars = $routeInfo[2];
+                break;
+            case Dispatcher::NOT_FOUND:
+            default:
+                $this->NotFoundMessage($path);
+                break;
         }
 
-        return $this->NotFoundMessage($path);
+
+        if ($handler) {
+            return $this->$handler($vars);
+        } else {
+            return $path;
+        }
     }
 
     public function NotFoundMessage($path) {
