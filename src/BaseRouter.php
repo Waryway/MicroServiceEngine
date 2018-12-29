@@ -12,9 +12,15 @@ class BaseRouter {
 CREDITS;
 
     /**
-     * @var array[Dispatcher]
+     * @var Dispatcher
      */
     private $dispatcher;
+
+    /**
+     * Server static assets, such as html or javascript
+     * @var string
+     */
+    private $staticAssetEnabled = false;
 
     private $routeList = [];
 
@@ -25,6 +31,11 @@ CREDITS;
     public function __construct()
     {
         $this->setRoute('GET', '/credit', 'credit');
+        if ($this->staticAssetEnabled) {
+            $this->setRoute(['GET','POST'], '/static[/{filePath:.*}]', 'staticAssetHandler' );
+            $this->setRoute(['GET','POST'], '/favicon.ico', 'staticAssetHandler' );
+        }
+
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
             foreach ($this->routeList as $route) {
                 $r->addRoute($route['method'], $route['route'], $route['handler']);
@@ -32,8 +43,49 @@ CREDITS;
         });
     }
 
+    /**
+     * Turn on the static asset server option.
+     */
+    protected function setStaticAssetEnabled() {
+        $this->staticAssetEnabled = true;
+    }
+
+    /**
+     * Add a route to the list of routes.
+     *
+     * @param $method
+     * @param $route
+     * @param $handler
+     */
     protected function setRoute($method, $route, $handler) {
         $this->routeList[] = ['method'=>$method,'route'=>$route,'handler'=>$handler];
+    }
+
+    /**
+     * Server a static asset.
+     *
+     * @param $params
+     * @return array
+     */
+    public function staticAssetHandler($params) {
+        print_r($params['queryString']);
+        $filePath = $params['filePath'];
+
+        $response = [
+            'body' => $this->NotFoundMessage('/static/'.$filePath),
+            'code' => 404
+        ];
+
+        if($filePath != "" && file_exists(dirname(__DIR__, 4) . '/static/' . $filePath)) {
+            $fileType = strstr($filePath, '.js') ? 'application/javascript' : 'text/html';
+
+            $response = new Response(200, ['Content-Type' => $fileType], file_get_contents(dirname(__DIR__, 4) . '/static/' . $filePath));
+        }
+
+        if($params['path'] == '/favicon.ico') {
+            $response = new Response(200,['Content-Type' => 'image/x-icon'], file_get_contents(dirname(__DIR__, 4) . '/static/favicon.ico'));
+        }
+        return $response;
     }
 
     /**
@@ -50,12 +102,6 @@ CREDITS;
         $headers = $request->getHeaders();
         $body = $request->getBody();
         $uri = $request->getUri();
-
-        // print_r($uri->getPath());
-        // Strip query string (?foo=bar) and decode URI
-        if (false !== $pos = strpos($uri, '?')) {
-            $uri = substr($uri, 0, $pos);
-        }
         $path = rawurldecode($uri->getPath());
 
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
@@ -68,6 +114,8 @@ CREDITS;
             case Dispatcher::FOUND:
                 $routeInfo[2]['headers'] = $headers;
                 $routeInfo[2]['body'] = $body;
+                $routeInfo[2]['query'] = rawurldecode($uri->getQuery());
+                $routeInfo[2]['path'] = $path;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 break;
