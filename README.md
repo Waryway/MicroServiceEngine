@@ -1,6 +1,10 @@
 # MicroServiceEngine
 Base Service using ReactPHP for PHP only Microservices
 
+## Status
+[![Build Status](https://travis-ci.org/Waryway/MicroServiceEngine.svg?branch=master)](https://travis-ci.org/Waryway/MicroServiceEngine)
+
+
 ## Description
 Use this microservice engine to power you microservice!  It is an extensible router / server base for ReactPHP. It provides an extremely light weight server and router combo.
 
