@@ -30,9 +30,11 @@ CREDITS;
 
     public function __construct()
     {
+        $this->staticAssetPath = '/'; // the root of the project, not the root of the OS.
+
         $this->setRoute('GET', '/credit', 'credit');
         if ($this->staticAssetEnabled) {
-            $this->setRoute(['GET','POST'], '/static[/{filePath:.*}]', 'staticAssetHandler' );
+            $this->setRoute(['GET','POST'], $this->staticAssetPath.'[/{filePath:.*}]', 'staticAssetHandler' );
             $this->setRoute(['GET','POST'], '/favicon.ico', 'staticAssetHandler' );
         }
 
@@ -46,7 +48,8 @@ CREDITS;
     /**
      * Turn on the static asset server option.
      */
-    protected function setStaticAssetEnabled() {
+    protected function setStaticAssetEnabled($path = '/') {
+        $this->staticAssetPath = $path;
         $this->staticAssetEnabled = true;
     }
 
@@ -72,18 +75,18 @@ CREDITS;
         $filePath = $params['filePath'];
 
         $response = [
-            'body' => $this->NotFoundMessage('/static/'.$filePath),
+            'body' => $this->NotFoundMessage($this->staticAssetPath.$filePath),
             'code' => 404
         ];
 
-        if($filePath != "" && file_exists(dirname(__DIR__, 4) . '/static/' . $filePath)) {
+        if($filePath != "" && file_exists(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath)) {
             $fileType = strstr($filePath, '.js') ? 'application/javascript' : 'text/html';
 
-            $response = new Response(200, ['Content-Type' => $fileType], file_get_contents(dirname(__DIR__, 4) . '/static/' . $filePath));
+            $response = new Response(200, ['Content-Type' => $fileType], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath));
         }
 
         if($params['path'] == '/favicon.ico') {
-            $response = new Response(200,['Content-Type' => 'image/x-icon'], file_get_contents(dirname(__DIR__, 4) . '/static/favicon.ico'));
+            $response = new Response(200,['Content-Type' => 'image/x-icon'], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath.'favicon.ico'));
         }
         return $response;
     }
