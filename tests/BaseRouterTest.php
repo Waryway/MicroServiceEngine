@@ -48,7 +48,5 @@ class BaseRouterTest extends TestCase
         $reflectionMockRoutersetStaticAssetPath->setAccessible(true);
 
         $reflectionMockRoutersetStaticAssetPath->invokeArgs($mockRouter, ['somePath']);
-
-
     }
 }
