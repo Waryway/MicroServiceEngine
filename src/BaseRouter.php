@@ -24,8 +24,17 @@ CREDITS;
 
     private $routeList = [];
 
+    /**
+     * @var MimeType[]
+     */
+    private $mimeTypeList = [];
+
+    /**
+     * @param $params
+     * @return Response
+     */
     private function credit($params){
-        return new Response(200, ['Content-Type' => 'text/html'], self::CREDITS);
+        return new Response(200, [], self::CREDITS);
     }
 
     public function __construct()
@@ -35,7 +44,6 @@ CREDITS;
         $this->setRoute('GET', '/credit', 'credit');
         if ($this->staticAssetEnabled) {
             $this->setRoute(['GET','POST'], $this->staticAssetPath.'[/{filePath:.*}]', 'staticAssetHandler' );
-            $this->setRoute(['GET','POST'], '/favicon.ico', 'staticAssetHandler' );
         }
 
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
@@ -48,7 +56,7 @@ CREDITS;
     /**
      * Turn on the static asset server option.
      */
-    protected function setStaticAssetEnabled($path = '/') {
+    protected function setStaticAssetPath($path = '/') {
         $this->staticAssetPath = $path;
         $this->staticAssetEnabled = true;
     }
@@ -64,6 +72,9 @@ CREDITS;
         $this->routeList[] = ['method'=>$method,'route'=>$route,'handler'=>$handler];
     }
 
+    protected function addMimeType(MimeType $mimeType) {
+        $this->mimeTypeList[$mimeType->getExtension()] = $mimeType;
+    }
     /**
      * Server a static asset.
      *
@@ -71,7 +82,6 @@ CREDITS;
      * @return array
      */
     public function staticAssetHandler($params) {
-        print_r($params['queryString']);
         $filePath = $params['filePath'];
 
         $response = [
@@ -80,14 +90,14 @@ CREDITS;
         ];
 
         if($filePath != "" && file_exists(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath)) {
-            $fileType = strstr($filePath, '.js') ? 'application/javascript' : 'text/html';
-
-            $response = new Response(200, ['Content-Type' => $fileType], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath));
+            foreach($this->mimeTypeList as $name => $mimeType) {
+                if(strstr($filePath, '.'.$mimeType->getExtension())) {
+                    $response = new Response(200, ['Content-Type' => $mimeType->getContentType()], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath));
+                    break;
+                }
+            }
         }
 
-        if($params['path'] == '/favicon.ico') {
-            $response = new Response(200,['Content-Type' => 'image/x-icon'], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath.'favicon.ico'));
-        }
         return $response;
     }
 
@@ -129,7 +139,7 @@ CREDITS;
         }
 
 
-        if ($handler) {
+        if ($handler && isset($vars)) {
             return $this->$handler($vars);
         } else {
             return $path;

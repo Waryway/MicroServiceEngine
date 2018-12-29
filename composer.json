@@ -23,5 +23,8 @@
 		}
 	},
     "bin":["server"],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+      "phpunit/phpunit": "6.4.3"
+    }
 }
