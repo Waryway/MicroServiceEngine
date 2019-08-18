@@ -25,39 +25,15 @@ You can also run `vendor\bin\server.bat -h` for further information.
 ## Router setup
 Make sure to extend the BaseRouter. More details to be added in the future!
 
-### Example Router 
+### Example Routers
+
+#### Example Application
+
 https://github.com/Waryway/MicroHelloWorld/blob/master/src/Router.php
 
-Given a MicroHelloWorld project, starting the server would be: 
+#### Internal Example
+For this repository an example from within this this source code can be viewed by first running `computer install`, then second, running :
     
-    vendor\bin\server Waryway\MicroHelloWorld 0.0.0.0:99
+    php server Waryway\Example 0.0.0.0:89
 
-```
-<?php
-namespace Waryway\MicroHelloWorld;
-use Waryway\MicroServiceEngine\BaseRouter;
-class Router extends BaseRouter {
-    public function __construct() {
-        $this->setRoute(['GET', 'POST', 'PUT', 'DELETE'], '/hi', 'helloWorld');
-        $this->setRoute(['GET', 'POST'], '/index.html', 'contentRoot');
-        parent::__construct();
-    }
-    public function helloWorld($params) {
-        print_r($params);
-        return 'Hello World';
-    }
-    public function contentRoot($params) {
-        $response = [
-            'body' => '404',
-            'code' => 404
-        ];
-        if(file_exists(__DIR__.'/../static/index.html')) {
-            print_r(array_keys($params));
-            $response['code'] = 200;
-            $response['body'] = file_get_contents(__DIR__.'/../static/index.html');
-            $response['headers'] = ['Content-Type' => 'text/plain'];
-        }
-        return $response;
-    }
-}
-```
+You'll be able to visit `localhost:89/index.html` and `localhost:89/hi`

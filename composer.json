@@ -22,6 +22,11 @@
 			"Waryway\\MicroServiceEngine\\": "src/"
 		}
 	},
+    "autoload-dev": {
+      "psr-4": {
+        "Waryway\\Example\\": "example/"
+      }
+    },
     "bin":["server"],
     "minimum-stability": "dev",
     "require-dev": {
