@@ -25,6 +25,10 @@ You can also run `vendor\bin\server.bat -h` for further information.
 ## Router setup
 Make sure to extend the BaseRouter. More details to be added in the future!
 
+### Setting routes
+
+The microservice engine is using the [nikic/fast-route](https://packagist.org/packages/nikic/fast-route) library. You can find path mapping information in the nikic/fast-route readme.
+
 ### Example Routers
 
 #### Example Application
