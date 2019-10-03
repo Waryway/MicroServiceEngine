@@ -22,6 +22,15 @@ CREDITS;
      */
     private $staticAssetEnabled = false;
 
+    /**
+     * the root of the project as the default, not the root of the OS.
+     * @var string
+     */
+    private $staticAssetPath = '/';
+
+    /**
+     * @var [[]method, route, handler]
+     */
     private $routeList = [];
 
     /**
@@ -33,17 +42,35 @@ CREDITS;
      * @param $params
      * @return Response
      */
-    private function credit($params){
+    public function credit($params){
         return new Response(200, [], self::CREDITS);
+    }
+
+    /**
+     * return when not found.
+     * @param $message
+     * @return array
+     */
+    protected function NotFoundRoute($message) {
+        return ['code'=>404, 'body'=>$message];
+    }
+
+    /**
+     * return when not allowed.
+     *
+     * @param string $message
+     * @return array
+     */
+    protected function NotAllowed($message='Method not allowed') {
+        return ['code'=>405, 'body'=>$message];
     }
 
     public function __construct()
     {
-        $this->staticAssetPath = '/'; // the root of the project, not the root of the OS.
+        $this->setRoute('GET', '/credit', [__CLASS__,'credit']);
 
-        $this->setRoute('GET', '/credit', 'credit');
         if ($this->staticAssetEnabled) {
-            $this->setRoute(['GET','POST'], $this->staticAssetPath.'[/{filePath:.*}]', 'staticAssetHandler' );
+            $this->setRoute(['GET','POST'], $this->staticAssetPath.'[/{filePath:.*}]', [__CLASS__,'staticAssetHandler'] );
         }
 
         $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
@@ -119,10 +146,11 @@ CREDITS;
 
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
         $handler = false;
+
         switch ($routeInfo[0]) {
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
-                // ... 405 Method Not Allowed
+                return $this->NotAllowed();
                 break;
             case Dispatcher::FOUND:
                 $routeInfo[2]['headers'] = $headers;
@@ -131,22 +159,12 @@ CREDITS;
                 $routeInfo[2]['path'] = $path;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
+                return $handler($vars);
                 break;
             case Dispatcher::NOT_FOUND:
             default:
-                $this->NotFoundMessage($path);
+                return $this->NotFoundRoute('The requested resource was unavailable. ' . $path);
                 break;
         }
-
-
-        if ($handler && isset($vars)) {
-            return $this->$handler($vars);
-        } else {
-            return $path;
-        }
-    }
-
-    public function NotFoundMessage($path) {
-        return 'The requested resource was unavailable. ' . $path;
     }
 }
