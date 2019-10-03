@@ -28,7 +28,7 @@ class BaseRouterTest extends TestCase
         $this->assertCount(1, $actualMap, 'Expected only a GET route');
         $this->assertArrayHasKey('/credit', $actualMap['GET'], 'The \'credit\' route is the only one pre-defined on the engine.');
         $this->assertCount(1, $actualMap['GET'], 'Expected only a single GET route');
-        $this->assertEquals($actualMap['GET']['/credit'], 'credit', 'Expecting the path \'credit\' to be default');
+        $this->assertEquals($actualMap['GET']['/credit'], ['Waryway\MicroServiceEngine\BaseRouter','credit'], 'Expecting the path \'credit\' to be default');
 
         // check the static enabled is false.
         $reflectionBaseRouterStaticAssetsEnabled = $reflectionBaseRouter->getProperty('staticAssetEnabled');
