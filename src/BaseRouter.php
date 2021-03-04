@@ -158,7 +158,7 @@ CREDITS;
                 $routeInfo[2]['path'] = $path;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                return $handler($vars);
+                return $this->$handler($vars);
                 break;
             case Dispatcher::NOT_FOUND:
             default:
