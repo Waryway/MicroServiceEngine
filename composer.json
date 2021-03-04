@@ -4,7 +4,7 @@
     "type": "application",
     "license": "MIT",
 	"require": {
-        "react/http": "dev-master",
+        "react/http": "1.2.0",
         "nikic/fast-route": "1.2.0",
 		"waryway/php-traits-library": "1.0.4"
     },
@@ -28,8 +28,8 @@
       }
     },
     "bin":["server"],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require-dev": {
-      "phpunit/phpunit": "6.4.3"
+      "phpunit/phpunit": "^8"
     }
 }

@@ -17,8 +17,9 @@ Rough steps to getting this up an running. Example coming soon!
 3. Add a `Router` class at the base namespace.
 4. The namespace should be something like... <company>\<project>
 5. Run `composer update`
-5. From the root directory of you new project, simply run: `vendor\bin\server.bat Waryway\UserApi 0.0.0.0:99`
-6. or for linux: `vendor\bin\server Waryway\UserApi 0.0.0.0:99`
+6. 'composer require waryway/micro-service-engine'
+7. From the root directory of you new project, simply run: `vendor\bin\server.bat <company>\<project> 0.0.0.0:99`
+8. or for linux: `./vendor/bin/server <company>/<project> 0.0.0.0:99`
 
 You can also run `vendor\bin\server.bat -h` for further information.
 

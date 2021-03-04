@@ -4,7 +4,7 @@ namespace Waryway\MicroServiceEngine;
 use Psr\Http\Message\ServerRequestInterface;
 use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
-use React\Http\Response;
+use React\Http\Message\Response;
 
 class BaseRouter {
     const CREDITS = <<<CREDITS
@@ -133,7 +133,7 @@ CREDITS;
      * Or at least determine a way to send the request to the router of the program that required this 'service'.
      *
      * @param ServerRequestInterface $request
-     * @return string
+     * @return string|array
      */
     public function RouteRequest(ServerRequestInterface $request)
     {
@@ -143,7 +143,6 @@ CREDITS;
         $body = $request->getBody();
         $uri = $request->getUri();
         $path = rawurldecode($uri->getPath());
-
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $path);
         $handler = false;
 

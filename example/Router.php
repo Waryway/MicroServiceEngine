@@ -1,7 +1,7 @@
 <?php
 namespace Waryway\Example;
 
-use React\Http\Response;
+use React\Http\Message\Response;
 use Waryway\MicroServiceEngine\BaseRouter;
 
 class Router extends BaseRouter {
