@@ -215,9 +215,9 @@ CREDITS;
                 } catch (\Throwable $e) {
                     $this->ErrorHandler($e);
                     break;
-                } finally {
-                    return $this->FailedRoute('Internal Server Error. ' . $path);
                 }
+                
+                return $this->FailedRoute('Internal Server Error. ' . $path);
                 break;
             case Dispatcher::NOT_FOUND:
             default:
