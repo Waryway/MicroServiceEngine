@@ -81,8 +81,17 @@ CREDITS;
     }
 
     /**
-     * Overrideable error handling.
-     * @param $error
+     * Override-able exception handler
+     * @param \Exception $error
+     */
+    protected function ExceptionHandler(\Exception $error)
+    {
+        echo $error->getMessage() . " " . $error->getFile() . " " . $error->getLine();
+    }
+
+    /**
+     * Override-able error handler
+     * @param \Throwable $error
      */
     protected function ErrorHandler(\Throwable $error)
     {
@@ -200,10 +209,15 @@ CREDITS;
 
                 try {
                     return $this->$handler($vars);
+                } catch (\Exception $e) {
+                    $this->ExceptionHandler($e);
+                    break;
                 } catch (\Throwable $e) {
                     $this->ErrorHandler($e);
+                    break;
+                } finally {
+                    return $this->FailedRoute('Internal Server Error. ' . $path);
                 }
-                return $this->FailedRoute('There was an Internal Server Error. ' . $path);
                 break;
             case Dispatcher::NOT_FOUND:
             default:
