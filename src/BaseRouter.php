@@ -1,12 +1,14 @@
 <?php
+
 namespace Waryway\MicroServiceEngine;
 
-use Psr\Http\Message\ServerRequestInterface;
-use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
+use FastRoute\RouteCollector;
+use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response;
 
-class BaseRouter {
+class BaseRouter
+{
     const CREDITS = <<<CREDITS
 <html><head><title>Waryway/MicroServiceEngine Credits</title></head><body><h1>Credits</h1><p>This website is powered by the <a href="http://waryway.com">WaryWay</a> MicroServiceEngine.</p></body></html>
 CREDITS;
@@ -42,7 +44,8 @@ CREDITS;
      * @param $params
      * @return Response
      */
-    public function credit($params){
+    public function credit($params)
+    {
         return new Response(200, [], self::CREDITS);
     }
 
@@ -51,8 +54,9 @@ CREDITS;
      * @param $message
      * @return array
      */
-    protected function NotFoundRoute($message) {
-        return ['code'=>404, 'body'=>$message];
+    protected function NotFoundRoute($message)
+    {
+        return ['code' => 404, 'body' => $message];
     }
 
     /**
@@ -61,29 +65,56 @@ CREDITS;
      * @param string $message
      * @return array
      */
-    protected function NotAllowed($message='Method not allowed') {
-        return ['code'=>405, 'body'=>$message];
+    protected function NotAllowed($message = 'Method not allowed')
+    {
+        return ['code' => 405, 'body' => $message];
+    }
+
+    /**
+     * return when not found.
+     * @param $message
+     * @return array
+     */
+    protected function FailedRoute($message)
+    {
+        return ['code' => 500, 'body' => $message];
+    }
+
+    /**
+     * Overrideable error handling.
+     * @param $error
+     */
+    protected function ErrorHandler(\Throwable $error)
+    {
+        echo $error->getMessage() . " " . $error->getFile() . " " . $error->getLine();
     }
 
     public function __construct()
     {
-        $this->setRoute('GET', '/credit', [__CLASS__,'credit']);
+        $this->setRoute('GET', '/credit', [__CLASS__, 'credit']);
 
         if ($this->staticAssetEnabled) {
-            $this->setRoute(['GET','POST'], $this->staticAssetPath.'[/{filePath:.*}]', [__CLASS__,'staticAssetHandler'] );
+            $this->setRoute(
+                ['GET', 'POST'],
+                $this->staticAssetPath . '[/{filePath:.*}]',
+                [__CLASS__, 'staticAssetHandler']
+            );
         }
 
-        $this->dispatcher = \FastRoute\simpleDispatcher(function (RouteCollector $r) {
-            foreach ($this->routeList as $route) {
-                $r->addRoute($route['method'], $route['route'], $route['handler']);
+        $this->dispatcher = \FastRoute\simpleDispatcher(
+            function (RouteCollector $r) {
+                foreach ($this->routeList as $route) {
+                    $r->addRoute($route['method'], $route['route'], $route['handler']);
+                }
             }
-        });
+        );
     }
 
     /**
      * Turn on the static asset server option.
      */
-    protected function setStaticAssetPath($path = '/') {
+    protected function setStaticAssetPath($path = '/')
+    {
         $this->staticAssetPath = $path;
         $this->staticAssetEnabled = true;
     }
@@ -95,31 +126,39 @@ CREDITS;
      * @param $route
      * @param $handler
      */
-    protected function setRoute($method, $route, $handler) {
-        $this->routeList[] = ['method'=>$method,'route'=>$route,'handler'=>$handler];
+    protected function setRoute($method, $route, $handler)
+    {
+        $this->routeList[] = ['method' => $method, 'route' => $route, 'handler' => $handler];
     }
 
-    protected function addMimeType(MimeType $mimeType) {
+    protected function addMimeType(MimeType $mimeType)
+    {
         $this->mimeTypeList[$mimeType->getExtension()] = $mimeType;
     }
+
     /**
      * Server a static asset.
      *
      * @param $params
      * @return array
      */
-    public function staticAssetHandler($params) {
+    public function staticAssetHandler($params)
+    {
         $filePath = $params['filePath'];
 
         $response = [
-            'body' => $this->NotFoundMessage($this->staticAssetPath.$filePath),
+            'body' => $this->NotFoundMessage($this->staticAssetPath . $filePath),
             'code' => 404
         ];
 
-        if($filePath != "" && file_exists(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath)) {
-            foreach($this->mimeTypeList as $name => $mimeType) {
-                if(strstr($filePath, '.'.$mimeType->getExtension())) {
-                    $response = new Response(200, ['Content-Type' => $mimeType->getContentType()], file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath));
+        if ($filePath != "" && file_exists(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath)) {
+            foreach ($this->mimeTypeList as $name => $mimeType) {
+                if (strstr($filePath, '.' . $mimeType->getExtension())) {
+                    $response = new Response(
+                        200,
+                        ['Content-Type' => $mimeType->getContentType()],
+                        file_get_contents(dirname(__DIR__, 4) . $this->staticAssetPath . $filePath)
+                    );
                     break;
                 }
             }
@@ -158,7 +197,13 @@ CREDITS;
                 $routeInfo[2]['path'] = $path;
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                return $this->$handler($vars);
+
+                try {
+                    return $this->$handler($vars);
+                } catch (\Throwable $e) {
+                    $this->ErrorHandler($e);
+                }
+                return $this->FailedRoute('There was an Internal Server Error. ' . $path);
                 break;
             case Dispatcher::NOT_FOUND:
             default:
