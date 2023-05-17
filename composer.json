@@ -4,7 +4,7 @@
     "type": "application",
     "license": "MIT",
 	"require": {
-        "react/http": "1.2.0",
+        "react/http": "1.9.0",
         "nikic/fast-route": "1.2.0",
 		"waryway/php-traits-library": "1.0.4"
     },
